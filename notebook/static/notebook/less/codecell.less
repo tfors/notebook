@@ -5,6 +5,11 @@ div.code_cell {
     }
 }
 
+/* highlight TODO/FIXME keywords in comments */
+div.code_cell .cm-comment.cm-cm-overlay.cm-highlight {
+    background-color: rgba(255, 255, 0, 0.6);
+}
+
 /* any special styling for code cells that are currently running goes here */
 div.code_cell.running {
 }

@@ -147,6 +147,20 @@ define([
 
     CodeCell.msg_cells = {};
 
+    var todoHighlightOverlay = {
+        token: function(stream) {
+            if (stream.pos == 0) {
+                var re = /\b(to\s*do|fix\s*me|hack)\b/i;
+                var match = re.exec(stream.string);
+                if (match) {
+                    stream.skipToEnd();
+                    return "highlight";
+                }
+            }
+            stream.skipToEnd();
+        }
+    };
+
     CodeCell.prototype = Object.create(Cell.prototype);
     
     /** @method create_element */
@@ -167,6 +181,7 @@ define([
         inner_cell.append(this.celltoolbar.element);
         var input_area = $('<div/>').addClass('input_area');
         this.code_mirror = new CodeMirror(input_area.get(0), this._options.cm_config);
+        this.code_mirror.addOverlay(todoHighlightOverlay);
         // In case of bugs that put the keyboard manager into an inconsistent state,
         // ensure KM is enabled when CodeMirror is focused:
         this.code_mirror.on('focus', function () {
